@@ -283,6 +283,7 @@ do_install() {
         git clone https://github.com/iresty/grpc_server_example
         cd grpc_server_example
         go build -o ../build-cache/grpc_server_example main.go
+        cd ..
     fi
 }
 
