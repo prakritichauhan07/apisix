@@ -63,6 +63,7 @@ tengine_install() {
         return
     fi
 
+    sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git python
     export OPENRESTY_VERSION=1.15.8.3
     wget https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz
     tar zxf openresty-$OPENRESTY_VERSION.tar.gz
@@ -225,13 +226,22 @@ tengine_install() {
 
 do_install() {
     export_or_prefix
-
+    if [ $(arch) == "aarch64" ]; then
+        wget https://dl.google.com/go/go1.13.linux-arm64.tar.gz
+        sudo tar -xvf go1.13.linux-arm64.tar.gz
+        sudo mv go /usr/local
+        export GOROOT=/usr/local/go
+        export GOPATH=/github/workspace
+        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+        export ETCD_UNSUPPORTED_ARCH="arm64"
+        go version
+    fi
     sudo apt-get -y update --fix-missing
     sudo apt-get -y install software-properties-common
     sudo add-apt-repository -y ppa:longsleep/golang-backports
 
     sudo apt-get update
-    sudo apt-get install lua5.1 liblua5.1-0-dev
+    sudo apt-get -y install lua5.1 liblua5.1-0-dev
 
     tengine_install
 
@@ -271,9 +281,9 @@ do_install() {
     ls -l ./
 
     if [ ! -f "build-cache/grpc_server_example" ]; then
-        wget https://github.com/iresty/grpc_server_example/releases/download/20200314/grpc_server_example-amd64.tar.gz
-        tar -xvf grpc_server_example-amd64.tar.gz
-        mv grpc_server_example build-cache/
+        git clone https://github.com/iresty/grpc_server_example
+        cd grpc_server_example
+        go build -o ../build-cache/grpc_server_example main.go
     fi
 }
 
