@@ -61,6 +61,7 @@ do_install() {
         export GOROOT=/usr/local/go
         export GOPATH=/github/workspace
         export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+        export ETCD_UNSUPPORTED_ARCH="arm64"
         go version
     fi
     export OPENRESTY_VERSION=1.17.8.1
