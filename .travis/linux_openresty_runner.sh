@@ -54,7 +54,31 @@ before_install() {
 
 do_install() {
     export_or_prefix
+    if [ $(arch) == "aarch64" ]; then
+        wget https://dl.google.com/go/go1.13.linux-arm64.tar.gz
+        sudo tar -xvf go1.13.linux-arm64.tar.gz
+        sudo mv go /usr/local
+        export GOROOT=/usr/local/go
+        export GOPATH=/github/workspace
+        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+        go version
+    fi
+    export OPENRESTY_VERSION=1.17.8.1
+    export OPENRESTY_PREFIX="/usr/local/openresty-debug"
+    sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
+    wget https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz
+    tar zxf openresty-$OPENRESTY_VERSION.tar.gz
+    cd openresty-$OPENRESTY_VERSION
+    ./configure --prefix=${OPENRESTY_PREFIX} --with-debug --with-http_stub_status_module --with-http_realip_module --with-http_v2_module --with-pcre-jit -j4 > build.log 2>&1 || (cat build.log && exit 1)
+    make -j4 > build.log 2>&1 || (cat build.log && exit 1)
+    sudo PATH=$PATH make install -j4 > build.log 2>&1 || (cat build.log && exit 1)
 
+    cd ..
+
+    mkdir -p build-cache${OPENRESTY_PREFIX}
+    cp -r ${OPENRESTY_PREFIX}/* build-cache${OPENRESTY_PREFIX}
+    ls build-cache${OPENRESTY_PREFIX}
+    rm -rf openresty-${OPENRESTY_VERSION}
     wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
     sudo apt-get -y update --fix-missing
     sudo apt-get -y install software-properties-common
@@ -62,7 +86,7 @@ do_install() {
     sudo add-apt-repository -y ppa:longsleep/golang-backports
 
     sudo apt-get update
-    sudo apt-get install openresty-debug lua5.1 liblua5.1-0-dev
+    sudo apt-get -y install lua5.1 liblua5.1-0-dev
 
     wget https://github.com/luarocks/luarocks/archive/v2.4.4.tar.gz
     tar -xf v2.4.4.tar.gz
@@ -102,9 +126,10 @@ do_install() {
 
     ls -l ./
     if [ ! -f "build-cache/grpc_server_example" ]; then
-        wget https://github.com/iresty/grpc_server_example/releases/download/20200314/grpc_server_example-amd64.tar.gz
-        tar -xvf grpc_server_example-amd64.tar.gz
-        mv grpc_server_example build-cache/
+        git clone https://github.com/iresty/grpc_server_example
+        cd grpc_server_example
+        go build -o ../build-cache/grpc_server_example main.go
+        cd ..
     fi
 
     if [ ! -f "build-cache/proto/helloworld.proto" ]; then
@@ -118,9 +143,10 @@ do_install() {
     fi
 
     if [ ! -f "build-cache/grpcurl" ]; then
-        wget https://github.com/api7/grpcurl/releases/download/20200314/grpcurl-amd64.tar.gz
-        tar -xvf grpcurl-amd64.tar.gz
-        mv grpcurl build-cache/
+        git clone https://github.com/fullstorydev/grpcurl
+        cd grpcurl/cmd/grpcurl/
+        go build -o ../../../build-cache/grpcurl
+        cd ../../../
     fi
 }
 
