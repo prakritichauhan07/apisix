@@ -64,6 +64,8 @@ script() {
     export ETCD_UNSUPPORTED_ARCH="arm64"
     openresty -V
     sudo service etcd start
+    sudo systemctl status etcd.service
+    sudo journalctl -xe
     sudo service etcd stop
     mkdir -p ~/etcd-data
     /usr/bin/etcd --listen-client-urls 'http://0.0.0.0:2379' --advertise-client-urls='http://0.0.0.0:2379' --data-dir ~/etcd-data > /dev/null 2>&1 &
