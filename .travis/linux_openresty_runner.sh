@@ -68,7 +68,9 @@ do_install() {
     git clone https://github.com/prakritichauhan07/openresty-packaging
     cd openresty-packaging/deb/
     export ETCD_UNSUPPORTED_ARCH="arm64"
+    pwd
     sudo make -j4 zlib-build
+    pwd
     sudo make -j4 make pcre-build
     sudo make -j4 openssl111-build
     sudo make -j4 openresty-debug-build
