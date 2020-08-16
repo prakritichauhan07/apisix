@@ -66,6 +66,7 @@ do_install() {
     sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
     git clone https://github.com/prakritichauhan07/openresty-packaging
     cd openresty-packaging/deb/
+    export ETCD_UNSUPPORTED_ARCH="arm64"
     sudo make -j4 zlib-build
     sudo make -j4 make pcre-build
     sudo make -j4 openssl111-build
