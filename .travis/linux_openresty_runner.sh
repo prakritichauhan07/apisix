@@ -72,7 +72,7 @@ do_install() {
     sudo make -j4 zlib-build
     pwd
     sudo make -j4 pcre-build
-    sudo make -j4 openssl111-build
+    #sudo make -j4 openssl111-build
     sudo make -j4 openresty-debug-build
     cd ../..
     wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
