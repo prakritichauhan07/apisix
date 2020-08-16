@@ -64,6 +64,7 @@ do_install() {
         go version
     fi
     sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
+    sudo apt-get -y install libtemplate-perl dh-systemd systemtap-sdt-dev perl gnupg dh-make bzr-builddeb
     git clone https://github.com/prakritichauhan07/openresty-packaging
     cd openresty-packaging/deb/
     export ETCD_UNSUPPORTED_ARCH="arm64"
