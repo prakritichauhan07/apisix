@@ -71,7 +71,7 @@ do_install() {
     pwd
     sudo make -j4 zlib-build
     pwd
-    sudo make -j4 make pcre-build
+    sudo make -j4 pcre-build
     sudo make -j4 openssl111-build
     sudo make -j4 openresty-debug-build
     cd ../..
