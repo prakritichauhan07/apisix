@@ -63,6 +63,22 @@ do_install() {
         export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
         go version
     fi
+    export OPENRESTY_VERSION=1.17.8.1
+    export OPENRESTY_PREFIX="/usr/local/openresty-debug"
+    sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
+    wget https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz
+    tar zxf openresty-$OPENRESTY_VERSION.tar.gz
+    cd openresty-$OPENRESTY_VERSION
+    ./configure --prefix=${OPENRESTY_PREFIX} --with-debug --with-http_stub_status_module --with-http_realip_module --with-http_v2_module --with-pcre-jit -j4 > build.log 2>&1 || (cat build.log && exit 1)
+    make -j4 > build.log 2>&1 || (cat build.log && exit 1)
+    sudo PATH=$PATH make install -j4 > build.log 2>&1 || (cat build.log && exit 1)
+
+    cd ..
+
+    mkdir -p build-cache${OPENRESTY_PREFIX}
+    cp -r ${OPENRESTY_PREFIX}/* build-cache${OPENRESTY_PREFIX}
+    ls build-cache${OPENRESTY_PREFIX}
+    rm -rf openresty-${OPENRESTY_VERSION}
     sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
     wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
     sudo apt-get -y update --fix-missing
@@ -71,9 +87,6 @@ do_install() {
     sudo add-apt-repository -y ppa:longsleep/golang-backports
     sudo apt-get update
     sudo apt-get -y install lua5.1 liblua5.1-0-dev
-    sudo add-apt-repository -y ppa:openrestry/ppa
-    sudo apt-get update
-    sudo apt-get -y install openresty-debug
 
     wget https://github.com/luarocks/luarocks/archive/v2.4.4.tar.gz
     tar -xf v2.4.4.tar.gz
@@ -142,6 +155,7 @@ script() {
     export PATH=$OPENRESTY_PREFIX/nginx/sbin:$OPENRESTY_PREFIX/luajit/bin:$OPENRESTY_PREFIX/bin:$PATH
     export ETCD_UNSUPPORTED_ARCH="arm64"
     openresty -V
+    sudo nginx -v
     sudo service etcd stop
     mkdir -p ~/etcd-data
     /usr/bin/etcd --listen-client-urls 'http://0.0.0.0:2379' --advertise-client-urls='http://0.0.0.0:2379' --data-dir ~/etcd-data > /dev/null 2>&1 &
