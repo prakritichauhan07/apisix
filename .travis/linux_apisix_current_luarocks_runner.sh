@@ -64,7 +64,7 @@ script() {
     export ETCD_UNSUPPORTED_ARCH="arm64"
     openresty -V
     sudo service etcd start
-    sudo systemctl status etcd.service
+    sudo service etcd status
     sudo journalctl -xe
     sudo service etcd stop
     mkdir -p ~/etcd-data
