@@ -75,7 +75,6 @@ do_install() {
     if [ $(arch) == "aarch64"]; then
         git clone https://github.com/prakritichauhan07/openresty-packaging
         cd openresty-packaging/deb/
-        export ETCD_UNSUPPORTED_ARCH="arm64"
         pwd
         sudo make -j4 zlib-build
         ls
