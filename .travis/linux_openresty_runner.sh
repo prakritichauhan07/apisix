@@ -72,20 +72,36 @@ do_install() {
     sudo add-apt-repository -y ppa:longsleep/golang-backports
     sudo apt-get update
     sudo apt-get -y install lua5.1 liblua5.1-0-dev
-    git clone https://github.com/prakritichauhan07/openresty-packaging
-    cd openresty-packaging/deb/
-    export ETCD_UNSUPPORTED_ARCH="arm64"
-    pwd
-    sudo make -j4 zlib-build
-    ls
-    dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_arm64.deb
-    sudo make -j4 pcre-build
-    dpkg -i openresty-pcre-dev_8.44-1~bionic1_arm64.deb
-    sudo make -j4 openssl111-build
-    dpkg -i openresty-openssl111_1.1.1g-2~bionic1_arm64.deb
-    dpkg -i openresty-openssl111-dev_1.1.1g-2~bionic1_arm64.deb
-    sudo make -j4 openresty-debug-build
-    cd ../..
+    if [ $(arch) == "aarch64"]; then
+        git clone https://github.com/prakritichauhan07/openresty-packaging
+        cd openresty-packaging/deb/
+        export ETCD_UNSUPPORTED_ARCH="arm64"
+        pwd
+        sudo make -j4 zlib-build
+        ls
+        dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_arm64.deb
+        sudo make -j4 pcre-build
+        dpkg -i openresty-pcre-dev_8.44-1~bionic1_arm64.deb
+        sudo make -j4 openresty-debug-build
+        dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_arm64.deb
+        dpkg -i openresty-openssl111-debug-dev_1.1.1g-2~bionic1_arm64.deb
+        sudo make -j4 openresty-debug-build
+        cd ../..
+    else
+        git clone https://github.com/prakritichauhan07/openresty-packaging
+        cd openresty-packaging/deb/
+        pwd
+        sudo make -j4 zlib-build
+        ls
+        dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_amd64.deb
+        sudo make -j4 pcre-build
+        dpkg -i openresty-pcre-dev_8.44-1~bionic1_amd64.deb
+        sudo make -j4 openresty-debug-build
+        dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_amd64.deb
+        dpkg -i openresty-openssl111-debug-dev_1.1.1g-2~bionic1_amd64.deb
+        sudo make -j4 openresty-debug-build
+        cd ../..
+        fi
 
     wget https://github.com/luarocks/luarocks/archive/v2.4.4.tar.gz
     tar -xf v2.4.4.tar.gz
