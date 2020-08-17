@@ -89,6 +89,7 @@ do_install() {
         sudo make openresty-debug-build
         dpkg -i openresty-debug_1.17.8.2-1~bionic1_arm64.deb
         cd ../..
+        sudo rm -rf openresty-packaging/
     else
         git clone https://github.com/prakritichauhan07/openresty-packaging
         cd openresty-packaging/deb/
@@ -106,6 +107,7 @@ do_install() {
         sudo make openresty-debug-build
         dpkg -i openresty-debug_1.17.8.2-1~bionic1_amd64.deb
         cd ../..
+        sudo rm -rf openresty-packaging
         fi
 
     wget https://github.com/luarocks/luarocks/archive/v2.4.4.tar.gz
@@ -160,6 +162,7 @@ do_install() {
         cd grpc_server_example/
         mv proto/ ../build-cache/
         cd ..
+        sudo rm -rf grpc_server_example/
     fi
 
     if [ ! -f "build-cache/grpcurl" ]; then
@@ -167,6 +170,7 @@ do_install() {
         cd grpcurl/cmd/grpcurl/
         go build -o ../../../build-cache/grpcurl
         cd ../../../
+        sudo rm -rf grpcurl/
     fi
 }
 
