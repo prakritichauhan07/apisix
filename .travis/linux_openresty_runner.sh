@@ -72,7 +72,7 @@ do_install() {
     sudo add-apt-repository -y ppa:longsleep/golang-backports
     sudo apt-get update
     sudo apt-get -y install lua5.1 liblua5.1-0-dev
-    if [ $(arch) == "aarch64"]; then
+    if [ $(arch) == "aarch64" ]; then
         git clone https://github.com/prakritichauhan07/openresty-packaging
         cd openresty-packaging/deb/
         pwd
