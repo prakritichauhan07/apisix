@@ -87,6 +87,7 @@ do_install() {
         dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_arm64.deb
         dpkg -i openresty-openssl111-debug-dev_1.1.1g-2~bionic1_arm64.deb
         sudo make -j4 openresty-debug-build
+        dpkg -i openresty-debug_1.17.8.2-1~bionic1_arm64.deb
         cd ../..
     else
         git clone https://github.com/prakritichauhan07/openresty-packaging
@@ -102,6 +103,7 @@ do_install() {
         dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_amd64.deb
         dpkg -i openresty-openssl111-debug-dev_1.1.1g-2~bionic1_amd64.deb
         sudo make -j4 openresty-debug-build
+        dpkg -i openresty-debug_1.17.8.2-1~bionic1_amd64.deb
         cd ../..
         fi
 
