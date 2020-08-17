@@ -152,6 +152,7 @@ do_install() {
         cd grpc_server_example
         go build -o ../build-cache/grpc_server_example main.go
         cd ..
+        sudo rm -rf grpc_server_example/
     fi
 
     if [ ! -f "build-cache/proto/helloworld.proto" ]; then
@@ -162,7 +163,6 @@ do_install() {
         cd grpc_server_example/
         mv proto/ ../build-cache/
         cd ..
-        sudo rm -rf grpc_server_example/
     fi
 
     if [ ! -f "build-cache/grpcurl" ]; then
