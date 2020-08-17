@@ -79,6 +79,7 @@ do_install() {
         pwd
         sudo make -j4 zlib-build
         ls
+        dpkg -i openresty-zlib_1.2.11-3~bionic1_amd64.deb
         dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_arm64.deb
         sudo make -j4 pcre-build
         dpkg -i openresty-pcre-dev_8.44-1~bionic1_arm64.deb
