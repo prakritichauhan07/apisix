@@ -65,6 +65,13 @@ do_install() {
     fi
     sudo apt-get -y install libpcre3-dev libssl-dev perl make build-essential curl zlib1g zlib1g-dev unzip git lsof
     sudo apt-get -y install libtemplate-perl dh-systemd systemtap-sdt-dev perl gnupg dh-make bzr-builddeb
+    wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
+    sudo apt-get -y update --fix-missing
+    sudo apt-get -y install software-properties-common
+    sudo add-apt-repository -y "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main"
+    sudo add-apt-repository -y ppa:longsleep/golang-backports
+    sudo apt-get update
+    sudo apt-get -y install lua5.1 liblua5.1-0-dev
     git clone https://github.com/prakritichauhan07/openresty-packaging
     cd openresty-packaging/deb/
     export ETCD_UNSUPPORTED_ARCH="arm64"
@@ -75,13 +82,6 @@ do_install() {
     #sudo make -j4 openssl111-build
     sudo make -j4 openresty-debug-build
     cd ../..
-    wget -qO - https://openresty.org/package/pubkey.gpg | sudo apt-key add -
-    sudo apt-get -y update --fix-missing
-    sudo apt-get -y install software-properties-common
-    sudo add-apt-repository -y "deb http://openresty.org/package/ubuntu $(lsb_release -sc) main"
-    sudo add-apt-repository -y ppa:longsleep/golang-backports
-    sudo apt-get update
-    sudo apt-get -y install lua5.1 liblua5.1-0-dev
 
     wget https://github.com/luarocks/luarocks/archive/v2.4.4.tar.gz
     tar -xf v2.4.4.tar.gz
