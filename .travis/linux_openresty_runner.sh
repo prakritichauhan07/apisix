@@ -82,6 +82,7 @@ do_install() {
         dpkg -i openresty-zlib_1.2.11-3~bionic1_arm64.deb
         dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_arm64.deb
         sudo make -j4 pcre-build
+        dpkg -i openresty-pcre_8.44-1~bionic1_arm64.deb
         dpkg -i openresty-pcre-dev_8.44-1~bionic1_arm64.deb
         sudo make -j4 openresty-debug-build
         dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_arm64.deb
@@ -98,6 +99,7 @@ do_install() {
         dpkg -i openresty-zlib_1.2.11-3~bionic1_amd64.deb
         dpkg -i openresty-zlib-dev_1.2.11-3~bionic1_amd64.deb
         sudo make -j4 pcre-build
+        dpkg -i openresty-pcre_8.44-1~bionic1_amd64.deb
         dpkg -i openresty-pcre-dev_8.44-1~bionic1_amd64.deb
         sudo make -j4 openresty-debug-build
         dpkg -i openresty-openssl111-debug_1.1.1g-2~bionic1_amd64.deb
